@@ -1,8 +1,12 @@
 const express = require('express');
 const db = require('../database/index.js')
+const getReposByUsername = require('../helpers/github.js')
+const bodyParser = require('body-parser')
 let app = express();
 
 app.use(express.static(__dirname + '/../client/dist'));
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
 
 app.post('/repos', (req, res) => {
   // TODO - your code here!
@@ -12,18 +16,20 @@ app.post('/repos', (req, res) => {
   
   // get func, (req, res)
   // then run db.save func to save
-  // app.get('link', (req, res) => {
-  //   db.save(req.query)
-  //     .then(() => res.status(200).send())
-  //     .catch(err => res.status(404).send('Get in Post', err))
-  // })
-  //   .then(() => res.status(201).send('IN POST----'))
-  //   .catch(err => res.status(404).send('Post', err))
-  console.log('IN POST----')
-  res.status(201).send('IN POST----')
+  let body;
+  getReposByUsername(req.body.username, (err, userData) => {
+    if (err) {
+      res.status(404).send('\n===== ERROR GETTING FROM GETHUB =====\n', err)
+    } else {
+      res.status(201).send(userData)
+    }
+  })
+    // .catch(err => res.status(404).send('Post', err))
+
+  // res.status(201).send(req.body)// {user: whatever_i_typed_in}
 });
 
-app.get('/repos', (req, res) => {
+app.get('/repos/:username', (req, res) => {
   // This route should send back the top 25 repos
   // TODO: modify so that i'm grabbing the document of user and then outputting user.repos
   db.Repo.find({ _id : { $lte: 25 } })
