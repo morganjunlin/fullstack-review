@@ -12,13 +12,15 @@ app.post('/repos', (req, res) => {
   
   // get func, (req, res)
   // then run db.save func to save
-  app.get('link', (req, res) => {
-    db.save(req.query)
-      .then(() => res.status(200).send())
-      .catch(err => res.status(404).send('Get in Post', err))
-  })
-    .then(() => res.status(201).send('IN POST----'))
-    .catch(err => res.status(404).send('Post', err))
+  // app.get('link', (req, res) => {
+  //   db.save(req.query)
+  //     .then(() => res.status(200).send())
+  //     .catch(err => res.status(404).send('Get in Post', err))
+  // })
+  //   .then(() => res.status(201).send('IN POST----'))
+  //   .catch(err => res.status(404).send('Post', err))
+  console.log('IN POST----')
+  res.status(201).send('IN POST----')
 });
 
 app.get('/repos', (req, res) => {
