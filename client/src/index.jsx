@@ -14,14 +14,14 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.handleList()
+    this.handleList();
   }
 
   handleList() {
     $.get('/repos', (req, res) => {
       this.setState({
         repos: req
-      },  () => console.log(this.state.repos))
+      })
     })
   }
 
@@ -30,16 +30,14 @@ class App extends React.Component {
     
     $.post('/repos', { 
       username: term 
-    }, (req, res) =>  {
-      console.log('===== HI I AM REQ =====\n', req, '\n===== HI I AM RES =====\n', res)
-    })
+    }, () => this.handleList())
   }
 
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
       <RepoList repos={this.state.repos} />
-      <Search onSearch={this.search.bind(this)}/>
+      <Search onSearch={this.search.bind(this)} handleList={this.handleList} />
     </div>)
   }
 }

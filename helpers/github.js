@@ -18,8 +18,8 @@ let getReposByUsername = (username, callback) => {
       let repoInfo = JSON.parse(body).map(repo => (
         {
           username: username,
-          name: repo['name'],
-          html_url: repo['html_url']
+          html_url: repo['html_url'],
+          watchers: repo['watchers']
         }
       ));
       

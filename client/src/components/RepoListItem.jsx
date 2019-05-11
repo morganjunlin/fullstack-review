@@ -1,17 +1,18 @@
 import React from 'react';
 
-const RepoListItem = (props) => {
+const RepoListItem = (props) => (
   <tr>
     <td>
-      name: {props.repo.username}
+      <strong>Github Handle:</strong> {props.repo.username}
     </td>
     <td>
-      repo: {props.repo.name}
+      <strong>URL:</strong> <a href={props.repo.html_url}>{props.repo.html_url}</a>
     </td>
     <td>
-      url: {props.repo.html_url}
+      <strong>Watchers:</strong> {props.repo.watchers}
     </td>
   </tr>
-}
+
+)
 
 export default RepoListItem;
