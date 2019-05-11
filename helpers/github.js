@@ -2,8 +2,6 @@ const request = require('request');
 const config = require('../config.js');
 
 let getReposByUsername = (username, callback) => {
-  // The options object has been provided to help you out, 
-  // but you'll have to fill in the URL
   let options = {
     url: `http://api.github.com/users/${username}/repos`,
     headers: {
@@ -14,11 +12,18 @@ let getReposByUsername = (username, callback) => {
 
   request(options, (err, res, body) => {
     if (err) {
-      callback(err, null)
+      callback(err, null);
       return;
     } else {
-      console.log('===== HELLO I AM BODY =====', body)
-      callback(null, body)
+      let repoInfo = JSON.parse(body).map(repo => (
+        {
+          username: username,
+          name: repo['name'],
+          html_url: repo['html_url']
+        }
+      ));
+      
+      callback(null, JSON.stringify(repoInfo));
     }
   })
 }

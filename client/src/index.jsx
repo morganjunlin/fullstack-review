@@ -10,7 +10,19 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
+    this.handleList = this.handleList.bind(this);
+  }
 
+  componentDidMount() {
+    this.handleList()
+  }
+
+  handleList() {
+    $.get('/repos', (req, res) => {
+      this.setState({
+        repos: req
+      })
+    })
   }
 
   search (term) {
@@ -26,7 +38,7 @@ class App extends React.Component {
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
-      <RepoList repos={this.state.repos}/>
+      <RepoList repos={this.state.repos} />
       <Search onSearch={this.search.bind(this)}/>
     </div>)
   }
