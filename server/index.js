@@ -9,24 +9,24 @@ app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 
 app.post('/repos', (req, res) => {
-  // TODO - your code here!
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
   
-  // get func, (req, res)
-  // then run db.save func to save
-  let body;
   getReposByUsername(req.body.username, (err, userData) => {
     if (err) {
       res.status(404).send('\n===== ERROR GETTING FROM GETHUB =====\n', err)
     } else {
-      res.status(201).send(userData)
+      db.save(req.body.username, userData, (err, data) => {
+        if (err) {
+          res.status(404).send('\n===== ERROR SAVING TO MONGODB =====\n', err)
+        } else {
+          console.log('\n===== WRITE GOOD =====\n', data)
+          res.status(201).send('SUCCESS');
+        }
+      })
     }
   })
-    // .catch(err => res.status(404).send('Post', err))
-
-  // res.status(201).send(req.body)// {user: whatever_i_typed_in}
 });
 
 app.get('/repos/:username', (req, res) => {

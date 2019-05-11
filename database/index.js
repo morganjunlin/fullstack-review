@@ -3,20 +3,24 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   username: String,
-  repoInfo: String
+  repoInfo: [String]
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-Repo.find({})
-  .then(data => console.log(data))
-
-let save = (data, callback) => {
+let save = (username, userData, callback) => {
   // This function should save a repo or repos to
   // the MongoDB
-  Repo.create(data)
-    .then(data => callback(null, data))
-    .catch(err => callback(err, null))
+  let userDocument = { username , repoInfo: userData }
+
+  // TODO: be able to do update if already exists
+  Repo.create(userDocument, (err, data) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, data)
+    }
+  })
 }
 
 let find = (data, callback) => {
