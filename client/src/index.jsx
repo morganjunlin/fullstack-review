@@ -21,7 +21,7 @@ class App extends React.Component {
     $.get('/repos', (req, res) => {
       this.setState({
         repos: req
-      })
+      },  () => console.log(this.state.repos))
     })
   }
 
